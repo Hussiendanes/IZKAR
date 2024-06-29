@@ -1,0 +1,130 @@
+ رجاءً اذا دخلت تاخذ سكربت لا تلعب فيه رجاءً رجاءً 
+local words = {
+    "استغفُر الله",
+    "الحمدلله",
+    "لا الاهة الا الله",
+    "بسم الله الرحمن الرحيم \" قُلۡ هُوَ ٱللَّهُ أَحَدٌ (1) ٱللَّهُ ٱلصَّمَدُ (2) لَمۡ يَلِدۡ وَلَمۡ يُولَدۡ (3) وَلَمۡ يَكُن لَّهُۥ كُفُوًا أَحَدُۢ (4) \" صدق الله العظيم",
+    "الحمدلله و شكر"
+}
+
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local textLabel = Instance.new("TextLabel")
+local screenGui = Instance.new("ScreenGui")
+local textBox = Instance.new("TextBox")
+local textButton = Instance.new("TextButton")
+local runService = game:GetService("RunService")
+local displaying = false
+
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+textLabel.Size = UDim2.new(0.4, 0, 0.1, 0)
+textLabel.Position = UDim2.new(0.3, 0, 0.05, 0)
+textLabel.BackgroundColor3 = Color3.fromRGB(211, 211, 211)
+textLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+textLabel.Font = Enum.Font.SourceSans
+textLabel.TextSize = 24
+textLabel.TextWrapped = true
+textLabel.Visible = false
+textLabel.Parent = screenGui
+textLabel.ClipsDescendants = true
+
+local UICornerTextLabel = Instance.new("UICorner")
+UICornerTextLabel.CornerRadius = UDim.new(0.3, 0)
+UICornerTextLabel.Parent = textLabel
+
+textBox.Size = UDim2.new(0.3, 0, 0.1, 0)
+textBox.Position = UDim2.new(0.35, 0, 0.45, 0)
+textBox.BackgroundColor3 = Color3.fromRGB(211, 211, 211)
+textBox.TextColor3 = Color3.fromRGB(0, 0, 0)
+textBox.Font = Enum.Font.SourceSans
+textBox.TextSize = 24
+textBox.PlaceholderText = "اكتب عدد الثواني"
+textBox.Parent = screenGui
+
+local UICornerTextBox = Instance.new("UICorner")
+UICornerTextBox.CornerRadius = UDim.new(0.3, 0)
+UICornerTextBox.Parent = textBox
+
+textButton.Size = UDim2.new(0.2, 0, 0.1, 0)
+textButton.Position = UDim2.new(0.4, 0, 0.55, 0)
+textButton.BackgroundColor3 = Color3.fromRGB(211, 211, 211)
+textButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+textButton.Font = Enum.Font.SourceSans
+textButton.TextSize = 24
+textButton.Text = "تأكيد"
+textButton.Parent = screenGui
+
+local UICornerTextButton = Instance.new("UICorner")
+UICornerTextButton.CornerRadius = UDim.new(0.3, 0)
+UICornerTextButton.Parent = textButton
+
+local alertLabel = Instance.new("TextLabel")
+alertLabel.Size = UDim2.new(0.6, 0, 0.2, 0)
+alertLabel.Position = UDim2.new(0.2, 0, 0.4, 0)
+alertLabel.BackgroundColor3 = Color3.fromRGB(255, 69, 0)
+alertLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+alertLabel.Font = Enum.Font.SourceSansBold
+alertLabel.TextSize = 24
+alertLabel.TextWrapped = true
+alertLabel.Text = "في حال متت يتوقف السكربت يرجا اعادة تشغيله وشكرآ"
+alertLabel.Visible = false
+alertLabel.Parent = screenGui
+
+local UICornerAlertLabel = Instance.new("UICorner")
+UICornerAlertLabel.CornerRadius = UDim.new(0.3, 0)
+UICornerAlertLabel.Parent = alertLabel
+
+local function displayAlert()
+    alertLabel.Visible = true
+    wait(4)
+    alertLabel.Visible = false
+end
+
+local function displayWords(interval)
+    local wordIndex = 1
+    while true do
+        if wordIndex <= #words then
+            if wordIndex == 4 then
+                textLabel.Text = "بسم الله الرحمن الرحيم \" قُلۡ هُوَ ٱللَّهُ أَحَدٌ (1) ٱللَّهُ ٱلصَّمَدُ (2) لَمۡ يَلِدۡ وَلَمۡ يُولَدۡ (3) وَلَمۡ يَكُن لَّهُۥ كُفُوًا أَحَدُۢ (4) \" صدق الله العظيم"
+                textLabel.Size = UDim2.new(0.8, 0, 0.2, 0)
+                textLabel.Position = UDim2.new(0.1, 0, 0.05, 0)
+                textLabel.TextSize = 18
+                textLabel.Visible = true
+                textLabel:TweenSizeAndPosition(UDim2.new(0.8, 0, 0.2, 0), UDim2.new(0.1, 0, 0.05, 0), "Out", "Bounce", 1, true)
+                wait(8)
+                textLabel.Visible = false
+            else
+                textLabel.Text = words[wordIndex]
+                textLabel.Size = UDim2.new(0.4, 0, 0.1, 0)
+                textLabel.Position = UDim2.new(0.3, 0, 0.05, 0)
+                textLabel.TextSize = 24
+                textLabel.Visible = true
+                textLabel:TweenSizeAndPosition(UDim2.new(0.4, 0, 0.1, 0), UDim2.new(0.3, 0, 0.05, 0), "Out", "Bounce", 1, true)
+                wait(5)
+                textLabel.Visible = false
+            end
+            wordIndex = wordIndex + 1
+            wait(interval)
+        else
+            wordIndex = 1
+        end
+    end
+end
+
+textButton.MouseButton1Click:Connect(function()
+    local interval = tonumber(textBox.Text)
+    if interval then
+        textBox.Visible = false
+        textButton.Visible = false
+        displaying = true
+        spawn(function()
+            displayAlert()
+            displayWords(interval)
+        end)
+    end
+end)
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+    textBox.Visible = true
+    textButton.Visible = true
+end)
